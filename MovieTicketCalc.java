@@ -41,96 +41,102 @@ class Movie
     // Method to calculate ticket cost
     public int calculateTicketCost(String circle)
     {
-        if (!(movieCategory.equalsIgnoreCase("2D") || movieCategory.equalsIgnoreCase("3D")))
+        int category = Integer.parseInt(movieCategory);
+        if (!circle.equalsIgnoreCase("gold") && !circle.equalsIgnoreCase("silver"))
         {
-            if (!(circle.equalsIgnoreCase("Gold") || circle.equalsIgnoreCase("Silver")))
+            if (category != 20 && category != 30)
             {
-                return -3; // Both invalid
+                return 3; // Both invalid
             }
-            return -1; // Category invalid
+            return 2; // Circle invalid
         }
-        if (!(circle.equalsIgnoreCase("Gold") || circle.equalsIgnoreCase("Silver")))
+        if (category != 20 && category != 30)
         {
-            return -2; // Circle invalid
+            return 1; // Category invalid
         }
 
-        // Valid cases
-        if (circle.equalsIgnoreCase("Gold"))
+        // Calculate ticket cost
+        if (circle.equalsIgnoreCase("gold"))
         {
-            if (movieCategory.equalsIgnoreCase("2D"))
+            if (category == 20)
             {
                 ticketCost = 300;
             }
-            else if (movieCategory.equalsIgnoreCase("3D"))
+            else if (category == 30)
             {
                 ticketCost = 500;
             }
         }
-        else if (circle.equalsIgnoreCase("Silver"))
+        else if (circle.equalsIgnoreCase("silver"))
         {
-            if (movieCategory.equalsIgnoreCase("2D"))
+            if (category == 20)
             {
                 ticketCost = 250;
             }
-            else if (movieCategory.equalsIgnoreCase("3D"))
+            else if (category == 30)
             {
                 ticketCost = 450;
             }
         }
-        return 0; // Success
+        return 0;
     }
 }
 
 // Main class
 class MovieTicketCalc
 {
-    // Method to get movie details
-    public static Movie getMovieDetails()
-    {
-        Scanner scanner = new Scanner(System.in);
-        Movie movie = new Movie();
-
-        System.out.print("Enter Movie Name: ");
-        movie.setMovieName(scanner.nextLine());
-
-        System.out.print("Enter Movie Category (2D/3D): ");
-        movie.setMovieCategory(scanner.nextLine());
-
-        return movie;
-    }
-
-    // Method to get circle
-    public static String getCircle()
-    {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter Circle (Gold/Silver): ");
-        return scanner.nextLine();
-    }
-
-    // Main method
     public static void main(String[] args)
     {
-        Movie movie = getMovieDetails();
-        String circle = getCircle();
+        Scanner sc = new Scanner(System.in);
 
+        // Get movie details
+        Movie movie = getMovieDetails(sc);
+
+        // Get circle
+        String circle = getCircle(sc);
+
+        // Calculate ticket cost
         int result = movie.calculateTicketCost(circle);
-        movie.setTicketCost(movie.getTicketCost());
+
+        // Output results
+        System.out.println("Movie name: " + movie.getMovieName());
+        System.out.println("Movie category: " + movie.getMovieCategory());
 
         switch (result)
         {
             case 0:
                 System.out.println("The ticket cost is: " + movie.getTicketCost());
                 break;
-            case -1:
-                System.out.println("Invalid movie category");
+            case 1:
+                System.out.println("Sorry, there is no " + movie.getMovieCategory() + " type of category in the theater.");
                 break;
-            case -2:
-                System.out.println("Invalid circle");
+            case 2:
+                System.out.println("Sorry! Circle is Invalid.");
                 break;
-            case -3:
-                System.out.println("Both movie category and circle are invalid");
+            case 3:
+                System.out.println("Sorry! Both circle and category are Invalid.");
                 break;
         }
+    }
+
+    // Method to get movie details
+    public static Movie getMovieDetails(Scanner sc)
+    {
+        Movie movie = new Movie();
+
+        System.out.print("Enter the movie name: ");
+        movie.setMovieName(sc.nextLine());
+
+        System.out.print("Enter the movie category: ");
+        movie.setMovieCategory(sc.nextLine());
+
+        return movie;
+    }
+
+    // Method to get circle
+    public static String getCircle(Scanner sc)
+    {
+        System.out.print("Enter the circle: ");
+        return sc.nextLine();
     }
 }
